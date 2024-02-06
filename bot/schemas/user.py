@@ -2,15 +2,23 @@ from datetime import datetime
 from utils import is_valid_url
 
 class User:
-    def __init__(self, name, first_name=None) -> None:
+    def __init__(self, messenger_id, name, first_name=None) -> None:
+        self._messenger_id = f"{messenger_id}"
         self.name = name
         self.first_name = first_name
         self.birthday = None
         self.academic_levels = []
-        self.speciality = ""
-        self.last_occupation = []
-        self.cv_url = ""
+        self.speciality = None
+        self.last_occupation = None
+        self.cv_url = None
 
+    def get_messenger_id(self):
+        return self._messenger_id if self._messenger_id else None
+    
+    def set_messenger_id(self, messenger_id):
+        self._messenger_id = messenger_id
+        return self
+    
     def set_name(self, name=None, first_name=None):
         if name or (isinstance(name, str) and len(name.strip()) > 0):
             self.name = name
@@ -29,7 +37,8 @@ class User:
             la date seulement sous format JJ/MM/AAAA
         '''
         try:
-            datetime.strptime(date, '%d/%m/%Y')
+            birthday = datetime.strptime(date, '%d/%m/%Y')
+            self.birthday = birthday.timestamp()
             return self
         except ValueError:
             return None 
@@ -48,10 +57,12 @@ class User:
 
     def upload_cv(self, cv):
         #todo: verifier que le fichier soit une fichier pdf ou image
+        self.cv_url = cv
         return self
     
-    def isready(self) -> bool:
+    def is_ready(self) -> bool:
         try:
+            assert isinstance(self._messenger_id, str) and len(self._messenger_id) > 0
             assert isinstance(self.name, str) and len(self.name) > 0
             assert isinstance(self.first_name, str) and len(self.first_name) > 0
             assert self.birthday is not None
@@ -62,7 +73,24 @@ class User:
             assert is_valid_url(self.cv_url)
 
             return True
-        except:
+        except Exception as error:
+            print(self)
+            print(error)
             return False
-            
+        
+    def parse(self) -> dict:
+        try:
+            assert self.is_ready()
+            return {
+                'messenger_id': self._messenger_id,
+                'name': self.name,
+                'first_name': self.first_name,
+                'birthday': self.birthday,
+                'academic_levels': self.academic_levels,
+                'speciality': self.speciality,
+                'last_occupation': self.last_occupation,
+                'cv_url': self.cv_url
+            }
+        except:
+            return None
             

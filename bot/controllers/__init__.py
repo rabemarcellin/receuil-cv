@@ -1,3 +1,3 @@
 from .main import *
-from .userinfo import *
+from .user import *
 from .academiclevels import *
