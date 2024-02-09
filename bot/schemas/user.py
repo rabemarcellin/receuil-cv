@@ -1,5 +1,16 @@
+from os import environ as env
+import cloudinary
+cloudinary.config(
+    cloud_name=env.get('CLOUDINARY_URL'),
+    api_key=env.get('CLOUDINARY_API_KEY'),
+    api_secret=env.get('CLOUDINARY_API_SECRET'),
+    secure=True
+)
+import cloudinary.uploader
+import cloudinary.api
 from datetime import datetime
 from utils import is_valid_url
+
 
 class User:
     def __init__(self, messenger_id, name, first_name=None) -> None:
@@ -55,10 +66,17 @@ class User:
         self.last_occupation = occupation
         return self
 
-    def upload_cv(self, cv):
+    def upload_cv(self, fb_cv):
         #todo: verifier que le fichier soit une fichier pdf ou image
-        self.cv_url = cv
-        return self
+        try:
+            # Upload the image from the URL to Cloudinary
+            upload_result = cloudinary.uploader.upload(fb_cv)
+            # Get the new URL from the upload result
+            self.cv_url = upload_result['url']
+            return self
+        except Exception as e:
+            print(f"Error uploading image: {e}")
+            return None
     
     def is_ready(self) -> bool:
         try:
