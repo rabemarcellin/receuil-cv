@@ -74,7 +74,7 @@ const extract = async (image_url) => {
   }
 
   await worker.terminate();
-  return text_result;
+  return text_result.join(" ");
 };
 
 module.exports = { extract };
