@@ -1,16 +1,14 @@
 from os import environ as env
 import cloudinary
-cloudinary.config(
-    cloud_name=env.get('CLOUDINARY_URL'),
-    api_key=env.get('CLOUDINARY_API_KEY'),
-    api_secret=env.get('CLOUDINARY_API_SECRET'),
-    secure=True
-)
 import cloudinary.uploader
-import cloudinary.api
 from datetime import datetime
 from utils import is_valid_url
 
+cloudinary.config(
+    cloud_name=env.get('CLOUDINARY_NAME'),
+    api_key=env.get('CLOUDINARY_API_KEY'),
+    api_secret=env.get('CLOUDINARY_API_SECRET'),
+)
 
 class User:
     def __init__(self, messenger_id, name, first_name=None) -> None:
