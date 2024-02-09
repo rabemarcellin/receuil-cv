@@ -50,8 +50,8 @@ class User:
             la date seulement sous format JJ/MM/AAAA
         '''
         try:
-            birthday = datetime.strptime(date, '%d/%m/%Y')
-            self.birthday = birthday.timestamp()
+            datetime.strptime(date, '%d/%m/%Y')
+            self.birthday = date
             return self
         except ValueError:
             return None 
