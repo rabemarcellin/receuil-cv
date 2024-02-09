@@ -18,7 +18,7 @@ def get_cv_content(cv_url: str):
         data = response.json()
         data = json.load(data)
         print(data)
-        cv_content = data.get("response", {}).get("result", {}).get("formatedText")
+        cv_content = data.get("response", {}).get("result", {}).get("formatedText", [])
         print("cv content", cv_content)
         return cv_content
                     
