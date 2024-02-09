@@ -1,7 +1,6 @@
 import requests
-from schemas.user import User
 
-def create_profile_service(profile: User):
+def create_profile_service(profile):
     url = "https://x8ki-letl-twmt.n7.xano.io/api:9uKtYW-B/profiles"
     response = requests.post(url, json=profile.parse())
     if response.status_code == 200:
@@ -9,3 +8,14 @@ def create_profile_service(profile: User):
     else:
         print(response.reason)
         return None
+
+def get_cv_content(cv_url: str):
+    url = "https://x8ki-letl-twmt.n7.xano.io/api:9uKtYW-B/cv_content_extractor"
+    params = {"cv_url": cv_url}
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        cv_content = data.get("response", {}).get("result", {}).get("formatedText")
+        print("cv content", ret)
+        return cv_content
+                    

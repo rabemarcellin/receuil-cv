@@ -3,6 +3,8 @@ import cloudinary
 import cloudinary.uploader
 from datetime import datetime
 from utils import is_valid_url
+from services.xano import get_cv_content
+
 
 cloudinary.config(
     cloud_name=env.get('CLOUDINARY_NAME'),
@@ -21,6 +23,7 @@ class User:
         self.speciality = None
         self.last_occupation = None
         self.cv_url = None
+        self.cv_content = []
 
     def get_messenger_id(self):
         return self._messenger_id if self._messenger_id else None
@@ -72,6 +75,7 @@ class User:
             upload_result = cloudinary.uploader.upload(fb_cv)
             # Get the new URL from the upload result
             self.cv_url = upload_result['url']
+            self.cv_content = get_cv_content(self.cv_url)
             return self
         except Exception as e:
             print(f"Error uploading image: {e}")
