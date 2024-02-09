@@ -1,6 +1,7 @@
 require("dotenv").config();
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
+const cors = require("cors");
 const app = require("./app");
 
 const PORT = process.env.PORT;
@@ -23,6 +24,7 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
+app.use(cors());
 app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.listen(PORT, () => {
