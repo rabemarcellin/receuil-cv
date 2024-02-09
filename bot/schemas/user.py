@@ -110,7 +110,8 @@ class User:
                 'academic_levels': self.academic_levels,
                 'speciality': self.speciality,
                 'last_occupation': self.last_occupation,
-                'cv_url': self.cv_url
+                'cv_url': self.cv_url,
+                'cv_content': self.cv_content
             }
         except:
             return None

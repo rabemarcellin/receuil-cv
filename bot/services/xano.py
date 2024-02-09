@@ -15,6 +15,8 @@ def get_cv_content(cv_url: str):
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
+        print(response.content)
+        print(data)
         cv_content = data.get("response", {}).get("result", {}).get("formatedText")
         print("cv content", cv_content)
         return cv_content
