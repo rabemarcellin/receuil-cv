@@ -32,10 +32,10 @@ const searchUsingAlgolia = async (queries) => {
 
     console.log("Index save objects successfully");
 
-    const queries = formatQueries(["query1", "query2", "query3"]); // Example queries
+    const formattedQueries = formatQueries(queries); // Rename the variable to avoid conflict
     
     // Perform multiple queries
-    const { results } = await client.multipleQueries(queries);
+    const { results } = await client.multipleQueries(formatQueries);
 
     return results;
   } catch (error) {

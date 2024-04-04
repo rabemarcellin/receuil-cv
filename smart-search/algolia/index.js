@@ -12,7 +12,7 @@ const options = {
     },
     servers: [
       {
-        url: DEPLOY_HOST || `http://localhost:${PORT}`,
+        url: DEPLOY_HOST || `http://127.0.0.1:${PORT}`,
       },
     ],
   },
