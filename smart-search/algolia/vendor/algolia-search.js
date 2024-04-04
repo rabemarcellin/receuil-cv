@@ -44,10 +44,5 @@ const searchUsingAlgolia = async (queries) => {
   }
 };
 
-// Call initAlgolia and handle the promise rejection
-searchUsingAlgolia().catch((error) => {
-  console.error("Unhandled promise rejection:", error);
-  process.exit(1); // Exit the process with an error code
-});
 
 module.exports = { searchUsingAlgolia };
