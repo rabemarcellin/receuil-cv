@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const algoliaMiddleware = require("./middleware");
 const { DEPLOY_HOST, PORT } = require("./constant");
+const { searchUsingAlgolia } = require("./vendor/algolia-search");
 
 const app = express();
 
@@ -23,16 +23,22 @@ app.use(express.json());
  *
  *
  * /search:
- *   get:
+ *   post:
  *     summary: Search in Algolia
  *     description: Search in Algolia using the provided query
- *     parameters:
- *       - in: query
- *         name: query
- *         required: true
- *         schema:
- *           type: string
- *         description: The search query
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               queries:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *             required:
+ *               - queries
  *     responses:
  *       200:
  *         description: Successful search
@@ -43,12 +49,9 @@ app.use(express.json());
  *       500:
  *         description: Internal Server Error
  */
-app.get("/search", algoliaMiddleware, async (req, res, next) => {
-  if (!req.algoliaIndex) {
-    res.status(400).send({ error: "algoliasearch index not found" });
-  }
-  const query = req.query.query;
-  const result = await req.algoliaIndex.search(query);
+app.post("/search", async (req, res) => {
+  const queries = req.body.queries;
+  const result = await searchUsingAlgolia(queries)
   res.json(result);
 });
 

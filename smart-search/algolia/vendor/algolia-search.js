@@ -6,8 +6,17 @@ const {
 } = require("../constant");
 const { getDataSource } = require("../utils");
 
-const initAlgolia = async () => {
+
+const formatQueries = (queries) => {
+  return queries.map(query => ({
+    indexName: ALGOLIA_INDEX,
+    query: query
+  }))
+}
+
+const searchUsingAlgolia = async (queries) => {
   try {
+    
     const client = algoliasearch(ALGOLIA_APP_NAME, ALGOLIA_SECRET);
     const index = client.initIndex(ALGOLIA_INDEX);
     const dataSource = await getDataSource();
@@ -22,7 +31,13 @@ const initAlgolia = async () => {
     await index.saveObjects(objectsWithObjectID);
 
     console.log("Index save objects successfully");
-    return index;
+
+    const queries = formatQueries(["query1", "query2", "query3"]); // Example queries
+    
+    // Perform multiple queries
+    const { results } = await client.multipleQueries(queries);
+
+    return results;
   } catch (error) {
     console.error("Error on save data source objects in Algolia:", error);
     throw error; // Propagate the error
@@ -30,9 +45,9 @@ const initAlgolia = async () => {
 };
 
 // Call initAlgolia and handle the promise rejection
-initAlgolia().catch((error) => {
+searchUsingAlgolia().catch((error) => {
   console.error("Unhandled promise rejection:", error);
   process.exit(1); // Exit the process with an error code
 });
 
-module.exports = { initAlgolia };
+module.exports = { searchUsingAlgolia };
