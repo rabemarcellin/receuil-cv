@@ -50,9 +50,11 @@ app.use(express.json());
  *         description: Internal Server Error
  */
 app.post("/search", async (req, res) => {
-  const queries = req.body.queries;
-  const result = await searchUsingAlgolia(queries)
-  res.json(result);
+  if(req.body.queries) {
+    const queries = req.body.queries;
+    const result = await searchUsingAlgolia(queries)
+    res.json(result);
+  }
 });
 
 module.exports = app;
