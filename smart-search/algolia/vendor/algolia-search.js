@@ -37,7 +37,8 @@ const searchUsingAlgolia = async (queries) => {
     // Perform multiple queries
     const { results } = await client.multipleQueries(formattedQueries);
 
-    return results;
+
+    return results.map(result => result.hits).reduce((acc, hits) => acc.concat(hits), []) || []
   } catch (error) {
     console.error("Error on save data source objects in Algolia:", error);
     throw error; // Propagate the error
