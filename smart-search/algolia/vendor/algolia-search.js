@@ -35,7 +35,7 @@ const searchUsingAlgolia = async (queries) => {
     const formattedQueries = formatQueries(queries); // Rename the variable to avoid conflict
     
     // Perform multiple queries
-    const { results } = await client.multipleQueries(formatQueries);
+    const { results } = await client.multipleQueries(formattedQueries);
 
     return results;
   } catch (error) {
