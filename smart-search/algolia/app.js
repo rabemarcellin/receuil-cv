@@ -7,7 +7,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: DEPLOY_HOST || `http://localhost:${PORT}`,
+    origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
